@@ -12,7 +12,7 @@ Some of the biggest lifestyle risk factors for Liver Cancer is alcohol abuse, sm
 My analysis will use the TCGA cohort, and I have identified 471 cases HT-Seq Counts files, with 289 liver cancer patients who received no treatment, and 33 patients who did receive treatment. I have confirmed that these patients have HT-Seq Counts files that are able to be downloaded, and that is what the DESeq vignette requires. 
 
 ## Data
-I will use data from https://portal.gdc.cancer.gov/repository. Out of the 322 Liver samples in TCGA, I have identified a total of 289 who did not receive treatment and 33 patients who did receive treatment. Patients have downloadable HT-Seq Counts files, and I have ensured that I am able to download and open them via the R application. 
+I will use data from https://portal.gdc.cancer.gov/repository. Out of the 322 Liver samples in TCGA who have reported Treatment/No Treatment, I have identified a total of 289 who did not receive treatment and 33 patients who did receive treatment. Patients have downloadable HT-Seq Counts files, and I have ensured that I am able to download and open them via the R application. 
 
 ## Milestone 1
 I plan on fully loading the data into vignette through HT-Seq steps, and attempt first round of analyses.
