@@ -1,7 +1,7 @@
 # Final Project Outline
 
 ## Title
-Differential gene expression in Treated and Untreated patients with Early Stage (I/II/III) Hepatocellular carcinoma Liver Cancer
+*Differential gene expression in Treated and Untreated patients with Early Stage (I/II/III) Hepatocellular carcinoma Liver Cancer*
 
 ## Author
 Maricarmen Pachicano
