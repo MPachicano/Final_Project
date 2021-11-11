@@ -2,10 +2,10 @@
 title: "R Notebook"
 output: html_notebook
 ---
-# Section 1: Update
+#Section 1: Update
 
-## htseq-count input
-## I have imported 40 htseq-count files into a directory, and is displayed in table sampleTable. I chose n = 20 from each treatment group for now, until I find a better and more efficient way to download and input the data. I also have a path that is directed to my personal Desktop, so I need to also come back to this.
+##htseq-count input
+##I have imported 40 htseq-count files into a directory, and is displayed in table sampleTable. I chose n = 20 from each treatment group for now, until I find a better and more efficient way to download and input the data. I also have a path that is directed to my personal Desktop, so I need to also come back to this.
 
 ## Creating a variable called 'directory' which points to where my output files are located.
 ```{r}
