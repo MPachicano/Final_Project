@@ -1,0 +1,46 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+# Section 1: Update
+
+## htseq-count input
+## I have imported 40 htseq-count files into a directory, and is displayed in table sampleTable. I chose n = 20 from each treatment group for now, until I find a better and more efficient way to download and input the data. I also have a path that is directed to my personal Desktop, so I need to also come back to this.
+
+## Creating a variable called 'directory' which points to where my output files are located.
+```{r}
+directory <- "/Users/maricarmen/Desktop/output"
+```
+
+## Specifying files that contain "treated" in the filename, and using that to identify the condition status.
+```{r}
+sampleFiles <- grep("treated",list.files(directory),value=TRUE)
+sampleCondition <- sub("(.*treated).*","\\1",sampleFiles)
+sampleTable <- data.frame(sampleName = sampleFiles,
+                          fileName = sampleFiles,
+                          condition = sampleCondition)
+sampleTable$condition <- factor(sampleTable$condition)
+```
+
+## Building the DESeqDataSet
+```{r}
+library("DESeq2")
+ddsHTSeq <- DESeqDataSetFromHTSeqCount(sampleTable = sampleTable,
+                                       directory = directory,
+                                       design= ~ condition)
+ddsHTSeq
+```
+
+# Section 2: Next Steps
+## My next steps are to succesfully download the rest of my files and input them into a working directory in R Studio. I will also try to complete the entire first round of analysis in the vignette. 
+
+
+# Section 3: Data
+## I will put my data in a shared Google Drive as a tar/zip file.
+
+# Section 4: Known Issues
+## Known Issue 1 - Downloading clinical data. When I download clinical data from https://portal.gdc.cancer.gov/, each sample/patient is listed twice. In many of these duplicates, there are some inconsistincies in the data. This is something to note but I do not think it will be an issue in my analysis.
+
+## Known Issue 2 - When I download my "cart" from https://portal.gdc.cancer.gov/, it comes in a zipped folder. I want to find a way to unzip ALL of my files at once instead of having to unzip one by one and put them in a folder by hand.
+
+## Known Issue 3 - Once I find a quicker way to unzip my files, I can download and work with a larger dataset (more than the 40 files I currently am working with).
