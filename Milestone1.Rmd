@@ -2,7 +2,7 @@
 title: "R Notebook"
 output: html_notebook
 ---
-# Section 1: Update (I have included a png of my R notebook so you can see dataframe and variables)
+# Section 1: Update (I have included a png of my R notebook in my repository so you can see dataframe and variables)
 
 ## htseq-count input
 ##I have imported 40 htseq-count files into a directory, and is displayed in table sampleTable. I chose n = 20 from each treatment group for now, until I find a better and more efficient way to download and input the data. I also have a path that is directed to my personal Desktop, so I need to also come back to this.
