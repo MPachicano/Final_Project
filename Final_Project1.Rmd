@@ -33,7 +33,8 @@ ddsHTSeq <- DESeqDataSetFromHTSeqCount(sampleTable = sampleTable,
 ddsHTSeq
 ```
 
-<img width="711" alt="Screen Shot 2021-11-30 at 11 31 54 AM" src="https://user-images.githubusercontent.com/89544326/144115039-c73e32c4-db03-4a85-a598-51bc69d40b1a.png">
+<img src="https://user-images.githubusercontent.com/89544326/144115039-c73e32c4-db03-4a85-a598-51bc69d40b1a.png">
+
 
 # Pre-filtering
 ```{r}
