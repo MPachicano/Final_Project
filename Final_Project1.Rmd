@@ -37,6 +37,8 @@ ddsHTSeq
 
 <a href="https://user-images.githubusercontent.com/89544326/144115039-c73e32c4-db03-4a85-a598-51bc69d40b1a.png">Fig 1</a>
 
+https://github.com/MPachicano/Final_Project/issues/1#issue-1067608292
+
 # Pre-filtering
 ```{r}
 keep <- rowSums(counts(ddsHTSeq)) >= 10
