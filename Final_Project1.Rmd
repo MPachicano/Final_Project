@@ -2,10 +2,6 @@
 title: "R Notebook"
 output: html_notebook
 ---
-# Milestone 2 
-
-# Section 1: Update
-The main updates I have for Milestone 2 are: I have ran through the entire vignette and have added analysis throughout, I have increased my sample size to a total of 80 samples, and I have also added Sex as a multiple comparison. 
 
 ## htseq-count input
 I have imported a total of 80 htseq-count files into a directory, and is displayed in table sampleTable. There are n = 40 from each treatment group in my data file (20 Female, 20 Male for mulitple comparisons).
@@ -36,6 +32,8 @@ ddsHTSeq <- DESeqDataSetFromHTSeqCount(sampleTable = sampleTable,
                                        design= ~ condition)
 ddsHTSeq
 ```
+
+<img width="711" alt="Screen Shot 2021-11-30 at 11 31 54 AM" src="https://user-images.githubusercontent.com/89544326/144115039-c73e32c4-db03-4a85-a598-51bc69d40b1a.png">
 
 # Pre-filtering
 ```{r}
