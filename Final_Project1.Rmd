@@ -35,6 +35,7 @@ ddsHTSeq
 
 <img src="https://user-images.githubusercontent.com/89544326/144115039-c73e32c4-db03-4a85-a598-51bc69d40b1a.png">
 
+<a href="https://user-images.githubusercontent.com/89544326/144115039-c73e32c4-db03-4a85-a598-51bc69d40b1a.png">Fig 1</a>
 
 # Pre-filtering
 ```{r}
