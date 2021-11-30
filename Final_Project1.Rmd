@@ -1,0 +1,471 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+# Milestone 2 
+
+# Section 1: Update
+The main updates I have for Milestone 2 are: I have ran through the entire vignette and have added analysis throughout, I have increased my sample size to a total of 80 samples, and I have also added Sex as a multiple comparison. 
+
+## htseq-count input
+I have imported a total of 80 htseq-count files into a directory, and is displayed in table sampleTable. There are n = 40 from each treatment group in my data file (20 Female, 20 Male for mulitple comparisons).
+
+## Creating a variable called 'directory' which points to where my output files are located.
+```{r}
+directory <- "/Users/maricarmen/Desktop/files"
+```
+
+## Specifying files that contain "treated" in the filename, and using that to identify the condition status.
+```{r}
+sampleFiles <- grep("treated",list.files(directory),value=TRUE)
+sampleCondition <- sub("(.*treated).*","\\1",sampleFiles)
+sampleType <- sub(".*treated","",sampleFiles)
+sampleTable <- data.frame(sampleName = sampleFiles,
+                          fileName = sampleFiles,
+                          condition = sampleCondition,
+                          type = sampleType)
+sampleTable$condition <- factor(sampleTable$condition)
+sampleTable$type <- factor(sampleTable$type)
+```
+
+## Building the DESeqDataSet
+```{r}
+library("DESeq2")
+ddsHTSeq <- DESeqDataSetFromHTSeqCount(sampleTable = sampleTable,
+                                       directory = directory,
+                                       design= ~ condition)
+ddsHTSeq
+```
+
+# Pre-filtering
+```{r}
+keep <- rowSums(counts(ddsHTSeq)) >= 10
+dds <- ddsHTSeq[keep,]
+```
+
+# Setting factor levels
+```{r}
+dds$condition <- factor(dds$condition, levels = c("untreated","treated"))
+```
+
+# Differential Expression Analysis
+```{r}
+dds <- DESeq(dds)
+res <- results(dds)
+res <- results(dds, name="condition_treated_vs_untreated")
+res
+```
+
+# Log fold change shrinkage
+```{r}
+resultsNames(dds)
+```
+
+
+```{r}
+resLFC <- lfcShrink(dds, coef="condition_treated_vs_untreated", type="apeglm")
+resLFC
+```
+
+# Ordering results table (by p-values)
+```{r}
+resOrdered <- res[order(res$pvalue),]
+```
+```{r}
+summary(res)
+```
+# How many p-values are less than 0.1?
+```{r}
+sum(res$padj < 0.1, na.rm=TRUE)
+```
+
+# Adjusting p-value to 0.5
+```{r}
+res05 <- results(dds, alpha=0.05)
+summary(res05)
+```
+
+# How many p-values are less than 0.5?
+```{r}
+sum(res05$padj < 0.05, na.rm=TRUE)
+```
+
+# MAPlot for shrunkin log2 fold changes
+```{r}
+plotMA(resLFC, ylim=c(-2,2))
+idx <- identify(res$baseMean, res$log2FoldChange)
+rownames(res)[idx]
+```
+
+# Alternative shrinkage estimators
+```{r}
+resultsNames(dds)
+```
+
+# Setting 'coef = 2' (this may take awhile, grab a coffee)
+```{r}
+resNorm <- lfcShrink(dds, coef=2, type="normal")
+resAsh <- lfcShrink(dds, coef=2, type="ashr")
+```
+
+```{r}
+resNorm <- lfcShrink(dds, coef=2, type="normal")
+resAsh <- lfcShrink(dds, coef=2, type="ashr")
+```
+
+```{r}
+par(mfrow=c(1,3), mar=c(4,4,2,1))
+xlim <- c(1,1e5); ylim <- c(-3,3)
+plotMA(resLFC, xlim=xlim, ylim=ylim, main="apeglm")
+plotMA(resNorm, xlim=xlim, ylim=ylim, main="normal")
+plotMA(resAsh, xlim=xlim, ylim=ylim, main="ashr")
+```
+# Plot counts
+```{r}
+plotCounts(dds, gene=which.min(res$padj), intgroup="condition")
+```
+# Plotting using ggplot
+```{r}
+d <- plotCounts(dds, gene=which.min(res$padj), intgroup="condition", 
+                returnData=TRUE)
+library("ggplot2")
+ggplot(d, aes(x=condition, y=count)) + 
+  geom_point(position=position_jitter(w=0.1,h=0)) + 
+  scale_y_log10(breaks=c(25,100,400))
+```
+# Multi-factor design 
+# Our sample population has a condition of interest (treated for liver cancer or untreated), but we also have the Sex of each patient under "type". By using the colData function, we see that we have to chop/clean up our Type names.
+```{r}
+colData(dds)
+```
+
+# First, I create a copy of the DDS so we can run a multi-factor analysis. 
+```{r}
+ddsMF <- dds
+```
+
+# Then, we change how "Type" is displayed for each sample participant. 
+```{r}
+levels(ddsMF$type)
+```
+# We will chop/clean up "Type" so that it only specifies F for female patient or M for male patient. 
+```{r}
+levels(ddsMF$type) <- sub("_.*", "", levels(ddsMF$type))
+levels(ddsMF$type)
+```
+# As condition is the variable of interest, we put it at the end of our formula. We then re-run DeSeq analysis:
+```{r}
+design(ddsMF) <- formula(~ type + condition)
+ddsMF <- DESeq(ddsMF)
+```
+# We access results using the results function:
+```{r}
+resMF <- results(ddsMF)
+head(resMF)
+```
+# Now we use the contrast function to extract log2 fold changes while specifying Type
+```{r}
+resMFType <- results(ddsMF,
+                     contrast=c("type", "F", "M"))
+head(resMFType)
+```
+
+
+# Info on results columns
+```{r}
+mcols(res)$description
+```
+
+# Exporting to CSV file (when ran, this will expor CSV to your Desktop)
+```{r}
+write.csv(as.data.frame(resOrdered), 
+          file="condition_treated_results.csv")
+```
+
+# Data transformations and visualizations!
+# Extracting transformed values (note: this takes a VERY long time to run, take a break go get a coffee)
+```{r}
+vsd <- vst(dds, blind=FALSE)
+rld <- rlog(dds, blind=FALSE)
+head(assay(vsd), 3)
+```
+
+# Effects on transformation on variance (Standard Deviation) for the normal logarithm transformation (ntd)
+```{r}
+# this gives log2(n + 1)
+ntd <- normTransform(dds)
+library("vsn")
+meanSdPlot(assay(ntd))
+```
+# Effects on transformation on variance (Standard Deviation) for the variance stabilizing transformation (vsd)
+```{r}
+meanSdPlot(assay(vsd))
+```
+# Effects on transformation on variance (Standard Deviation) for the regularized log transformation (rld)
+```{r}
+meanSdPlot(assay(rld))
+```
+
+# Heatmap of count matrix
+# Known issue: I had to remove colnames because they were too complicated, and the heatmap wasn't being displayed. Will need to come back to this. Other known issue: Not sure why female and male are not clumped together, I think this has to do with how my files are ordered. I need to come back to this. 
+# This is a heatmap with both condition and type being analyzed. Multi-factor design. 
+```{r}
+library("pheatmap")
+select <- order(rowMeans(counts(ddsMF,normalized=TRUE)),
+                decreasing=TRUE)[1:20]
+df <- as.data.frame(colData(ddsMF)[,c("condition","type")])
+pheatmap(assay(ntd)[select,], cluster_rows=FALSE, show_rownames=FALSE, show_colnames = FALSE,
+         cluster_cols=FALSE, annotation_col=df)
+```
+# Heatmap using ntd data described above. 
+```{r}
+library("pheatmap")
+select <- order(rowMeans(counts(dds,normalized=TRUE)),
+                decreasing=TRUE)[1:20]
+df <- as.data.frame(colData(ddsMF)[,c("condition","type")])
+pheatmap(assay(ntd)[select,], cluster_rows=FALSE, show_rownames=FALSE, show_colnames = FALSE,
+         cluster_cols=FALSE, annotation_col=df)
+```
+# Heatmap using vsd data described above.
+```{r}
+pheatmap(assay(vsd)[select,], cluster_rows=FALSE, show_rownames=FALSE, show_colnames = FALSE,
+         cluster_cols=FALSE, annotation_col=df)
+```
+# Heatmap using rld data described above.
+```{r}
+pheatmap(assay(rld)[select,], cluster_rows=FALSE, show_rownames=FALSE, show_colnames = FALSE,
+         cluster_cols=FALSE, annotation_col=df)
+```
+
+# Sample clustering 
+```{r}
+sampleDists <- dist(t(assay(vsd)))
+```
+# Creating a heatmap of the sample-to-sample distances.
+```{r}
+library("pheatmap")
+library("RColorBrewer")
+sampleDistMatrix <- as.matrix(sampleDists)
+rownames(sampleDistMatrix) <- paste(vsd$condition)
+colnames(sampleDistMatrix) <- NULL
+colors <- colorRampPalette( rev(brewer.pal(9, "Blues")) )(255)
+pheatmap(sampleDistMatrix,
+         clustering_distance_rows=sampleDists,
+         clustering_distance_cols=sampleDists,
+         col=colors)
+```
+# PCA plot using vsd 
+```{r}
+plotPCA(vsd, intgroup="condition", ntop = 500, returnData = FALSE)
+```
+# Variations to the standard workflow!
+# Performing Wald test on dataset
+```{r}
+dds <- estimateSizeFactors(dds)
+dds <- estimateDispersions(dds)
+dds <- nbinomWaldTest(dds)
+```
+```{r}
+resultsNames(dds)
+```
+
+# Performing Liklihood ratio test on dataset
+```{r}
+dds <- DESeq(dds, test="LRT", reduced=~1)
+res <- results(dds)
+```
+
+# False sign or small rate in MA-plot
+```{r}
+resApeT <- lfcShrink(dds, coef=2, type="apeglm", lfcThreshold=1)
+plotMA(resApeT, ylim=c(-3,3), cex=.8)
+abline(h=c(-1,1), col="dodgerblue", lwd=2)
+```
+
+```{r}
+summary(res)
+```
+
+# Dispersion plot and fitting alternatives!
+# Dispersion plot
+```{r}
+plotDispEsts(dds)
+```
+# Custom dispersion fit 
+```{r}
+ddsCustom <- dds
+useForMedian <- mcols(ddsCustom)$dispGeneEst > 1e-7
+medianDisp <- median(mcols(ddsCustom)$dispGeneEst[useForMedian],
+                     na.rm=TRUE)
+dispersionFunction(ddsCustom) <- function(mu) medianDisp
+ddsCustom <- estimateDispersionsMAP(ddsCustom)
+```
+# Independent filtering of results
+```{r}
+metadata(res)$alpha
+```
+```{r}
+metadata(res)$filterThreshold
+```
+
+# Supplying a custom dispersion fit
+```{r}
+ddsCustom <- dds
+useForMedian <- mcols(ddsCustom)$dispGeneEst > 1e-7
+medianDisp <- median(mcols(ddsCustom)$dispGeneEst[useForMedian],
+                     na.rm=TRUE)
+dispersionFunction(ddsCustom) <- function(mu) medianDisp
+ddsCustom <- estimateDispersionsMAP(ddsCustom)
+```
+
+
+# Independent filtering of results
+```{r}
+plot(metadata(res)$filterNumRej, 
+     type="b", ylab="number of rejections",
+     xlab="quantiles of filter")
+lines(metadata(res)$lo.fit, col="red")
+abline(v=metadata(res)$filterTheta)
+```
+# Turn off independent filtering
+```{r}
+resNoFilt <- results(dds, independentFiltering=FALSE)
+addmargins(table(filtering=(res$padj < .1),
+                 noFiltering=(resNoFilt$padj < .1)))
+```
+
+# 4 possible alternative hypotheses in MA-plot (note: takes long time to run, go grab a coffee. Also, make sure to turn off independent filtering, and reload/rerun Wald test)
+```{r}
+par(mfrow=c(2,2),mar=c(2,2,1,1))
+ylim <- c(-2.5,2.5)
+resGA <- results(dds, lfcThreshold=.5, altHypothesis="greaterAbs")
+resLA <- results(dds, lfcThreshold=.5, altHypothesis="lessAbs")
+resG <- results(dds, lfcThreshold=.5, altHypothesis="greater")
+resL <- results(dds, lfcThreshold=.5, altHypothesis="less")
+drawLines <- function() abline(h=c(-.5,.5),col="dodgerblue",lwd=2)
+plotMA(resGA, ylim=ylim); drawLines()
+plotMA(resLA, ylim=ylim); drawLines()
+plotMA(resG, ylim=ylim); drawLines()
+plotMA(resL, ylim=ylim); drawLines()
+```
+
+# Access to all calculated values
+```{r}
+mcols(dds,use.names=TRUE)[1:4,1:4]
+```
+
+```{r}
+substr(names(mcols(dds)),1,10) 
+```
+
+```{r}
+mcols(mcols(dds), use.names=TRUE)[1:4,]
+```
+
+# Mean values and Cook's distances
+```{r}
+head(assays(dds)[["mu"]])
+```
+
+```{r}
+head(assays(dds)[["cooks"]])
+```
+
+# Dispersion
+```{r}
+head(dispersions(dds))
+```
+
+```{r}
+head(mcols(dds)$dispersion)
+```
+
+# Size factors
+```{r}
+sizeFactors(dds)
+```
+# extracting the matrix [βir] for all genes i and model coefficients r
+```{r}
+head(coef(dds))
+```
+# B prior variance
+```{r}
+attr(dds, "betaPriorVar")
+```
+
+# General Information (packages, info on log fold change shrinkage)
+```{r}
+priorInfo(resLFC)
+```
+```{r}
+priorInfo(resNorm)
+```
+
+```{r}
+priorInfo(resAsh)
+```
+# Dispersion prior variance
+```{r}
+dispersionFunction(dds)
+```
+```{r}
+attr(dispersionFunction(dds), "dispPriorVar")
+```
+```{r}
+metadata(dds)[["version"]]
+```
+
+
+# Sample/Gene-dependent Nomralization factors
+```{r}
+normFactors <- matrix(runif(nrow(dds)*ncol(dds),0.5,1.5),
+                      ncol=ncol(dds),nrow=nrow(dds),
+                      dimnames=list(1:nrow(dds),1:ncol(dds)))
+
+normFactors <- normFactors / exp(rowMeans(log(normFactors)))
+normalizationFactors(dds) <- normFactors
+```
+
+# Count outlier detection
+```{r}
+W <- res$stat
+maxCooks <- apply(assays(dds)[["cooks"]],1,max)
+idx <- !is.na(W)
+plot(rank(W[idx]), maxCooks[idx], xlab="rank of Wald statistic", 
+     ylab="maximum Cook's distance per gene",
+     ylim=c(0,5), cex=.4, col=rgb(0,0,0,.3))
+m <- ncol(dds)
+p <- 3
+abline(h=qf(.99, p, m - p))
+```
+# Filtering criteria
+```{r}
+plot(res$baseMean+1, -log10(res$pvalue),
+     log="x", xlab="mean of normalized counts",
+     ylab=expression(-log[10](pvalue)),
+     ylim=c(0,30),
+     cex=.4, col=rgb(0,0,0,.3))
+```
+# Histogram p-values for all tests
+```{r}
+use <- res$baseMean > metadata(res)$filterThreshold
+h1 <- hist(res$pvalue[!use], breaks=0:50/50, plot=FALSE)
+h2 <- hist(res$pvalue[use], breaks=0:50/50, plot=FALSE)
+colori <- c(`do not pass`="khaki", `pass`="powderblue")
+```
+```{r}
+barplot(height = rbind(h1$counts, h2$counts), beside = FALSE,
+        col = colori, space = 0, main = "", ylab="frequency")
+text(x = c(0, length(h1$counts)), y = 0, label = paste(c(0,1)),
+     adj = c(0.5,1.7), xpd=NA)
+legend("topright", fill=rev(colori), legend=rev(names(colori)))
+```
+
+# Section 2: Data
+I will have to tar/zip my data file and share them on the Google Drive closer to the due date. 
+
+# Section 3: Known issues
+1) When I download my "cart" from https://portal.gdc.cancer.gov/, I have to unzip each individual file myself. I think using linux there is a faster way, but I am not sure how to do this yet. For now, I have unzipped each HTSeq file one by one.
+2) The file names are very long because each sample has a unique ID. Because of this, I needed to cut Sample ID's out of my heatmaps because it was not loading the graph successfully. I will need to figure out a easy way to rename all the sample ID's. 
+3) I still need to figure out how to tar/zip my data file for the final project submission. 
+4) I still need to clean up my analysis throughout the vignette. 
