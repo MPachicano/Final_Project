@@ -41,6 +41,10 @@ https://github.com/MPachicano/Final_Project/issues/1#issue-1067608292
 
 <a href="https://user-images.githubusercontent.com/89544326/144116365-ba6415f1-63e8-4082-b749-503100b86618.png">Fig 1</a>
 
+<img src="https://user-images.githubusercontent.com/89544326/144116365-ba6415f1-63e8-4082-b749-503100b86618.png">
+                                                                                                                 
+<img src="https://user-images.githubusercontent.com/89544326/144116365-ba6415f1-63e8-4082-b749-503100b86618.png">                                                                                                                
+
 # Pre-filtering
 ```{r}
 keep <- rowSums(counts(ddsHTSeq)) >= 10
