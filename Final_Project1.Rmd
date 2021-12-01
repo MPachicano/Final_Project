@@ -33,6 +33,8 @@ ddsHTSeq <- DESeqDataSetFromHTSeqCount(sampleTable = sampleTable,
 ddsHTSeq
 ```
 
+![](https://user-images.githubusercontent.com/89544326/144116365-ba6415f1-63e8-4082-b749-503100b86618.png)
+
 <img src="https://user-images.githubusercontent.com/89544326/144115039-c73e32c4-db03-4a85-a598-51bc69d40b1a.png">
 
 <a href="https://user-images.githubusercontent.com/89544326/144115039-c73e32c4-db03-4a85-a598-51bc69d40b1a.png">Fig 1</a>
