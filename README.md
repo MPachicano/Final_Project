@@ -330,12 +330,23 @@ pheatmap(sampleDistMatrix,
 
 # Principle Component plots
 ## PCA plotting:
-This PCA plot shows the samples in a 2D plane spanned  by their first two princial components. These plots are utilized for visualizing and analyzing the overall effect of sample variance. 
+This PCA plot shows the samples in a 2D plane spanned  by their first two princial components. These plots are utilized for visualizing and analyzing the overall effect of sample variance. Each dot on the PCA plot below represent one of the 80 samples included in this analysis. As you can see, the Treated and Untreated groups are 'mixed' along the projected plane. This indicates that there is not much difference between the two groups. 
 This is a PCA plot using vsd transformed data
 ```{r}
 plotPCA(vsd, intgroup="condition", ntop = 500, returnData = FALSE)
 ```
 ![](https://user-images.githubusercontent.com/89544326/144496205-69bc29ec-2146-42a0-bad0-a6bf4df0968a.png)
+
+```{r}
+pcaData <- plotPCA(vsd, intgroup=c("condition", "type"), returnData=TRUE)
+percentVar <- round(100 * attr(pcaData, "percentVar"))
+ggplot(pcaData, aes(PC1, PC2, color=condition, shape=type)) +
+  geom_point(size=3) +
+  xlab(paste0("PC1: ",percentVar[1],"% variance")) +
+  ylab(paste0("PC2: ",percentVar[2],"% variance")) + 
+  coord_fixed()
+```
+
 
 # Variations to the standard workflow
 ## Performing Wald test on dataset: 
