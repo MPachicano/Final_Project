@@ -337,6 +337,8 @@ plotPCA(vsd, intgroup="condition", ntop = 500, returnData = FALSE)
 ```
 ![](https://user-images.githubusercontent.com/89544326/144496205-69bc29ec-2146-42a0-bad0-a6bf4df0968a.png)
 
+However, if you add in Sex for multiple comparisons, you can see that there is a difference between male and female, treated and untreated patients. This is indicated by less mixing, and more grouping of same groups.
+
 ```{r}
 pcaData <- plotPCA(vsd, intgroup=c("condition", "type"), returnData=TRUE)
 percentVar <- round(100 * attr(pcaData, "percentVar"))
@@ -346,6 +348,7 @@ ggplot(pcaData, aes(PC1, PC2, color=condition, shape=type)) +
   ylab(paste0("PC2: ",percentVar[2],"% variance")) + 
   coord_fixed()
 ```
+![](https://user-images.githubusercontent.com/89544326/144516408-ba16ed61-cd2a-4c6c-b5bf-c2e17f49dc43.png)
 
 
 # Variations to the standard workflow
