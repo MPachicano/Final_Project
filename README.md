@@ -267,6 +267,8 @@ meanSdPlot(assay(rld))
 
 # Heatmap of count matrix
 Known issue: I had to remove colnames because they were too complicated, and the heatmap wasn't being displayed. Will need to come back to this. 
+Overall, this analysis (shown in the following heatmaps below) illustrate differential gene expression between groups. As you can see in the figures, it appears as though the "Treated" group has an increase differential gene expression compared to the "Untreated" groups. In addition, there is also less differential genetic expression in the Male groups. 
+
 ## This is a heatmap of the multi-factor design (type + condition):
 The heatmaps below are of the various transformed data. 
 ```{r}
