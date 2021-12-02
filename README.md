@@ -474,11 +474,11 @@ head(assays(dds)[["cooks"]])
 ![](https://user-images.githubusercontent.com/89544326/144496230-632e0070-bf86-4ffd-9667-034d877bd465.png)
 
 # Dispersion
-##Dispersions can be accessed with the 'dispersion' function. 
+## Dispersions can be accessed with the 'dispersion' function. 
 ```{r}
 head(dispersions(dds))
 ```
-![](https://user-images.githubusercontent.com/89544326/144496230-632e0070-bf86-4ffd-9667-034d877bd465.png)
+![](https://user-images.githubusercontent.com/89544326/144496231-9b192c7e-21d4-408c-bc90-ff9ddf960674.png)
 
 # Size factors: 
 ##Size factors are available with the sizeFactors function:
