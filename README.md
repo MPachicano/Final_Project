@@ -1,9 +1,11 @@
 ---
 title: "Final_Project"
 author: "Maricarmen Pachicano"
-date: "11/30/2021"
+date: "12/3/2021"
 output: html_document
 ---
+
+# Section 1: DESeq2 Vignette
 
 ## HTSeq-Count Input
 I have imported a total of 80 HTSeq-count files into a directory, and is displayed in table sampleTable. There are n = 40 from each treatment group in my data file (20 Female, 20 Male for mulitple comparisons).
