@@ -5,8 +5,6 @@ date: "11/30/2021"
 output: html_document
 ---
 
-
-# Setting up R environment and Dataset input:
 ## HTSeq-Count Input
 I have imported a total of 80 HTSeq-count files into a directory, and is displayed in table sampleTable. There are n = 40 from each treatment group in my data file (20 Female, 20 Male for mulitple comparisons).
 
@@ -36,6 +34,8 @@ ddsHTSeq <- DESeqDataSetFromHTSeqCount(sampleTable = sampleTable,
                                        design= ~ condition)
 ddsHTSeq
 ```
+![](https://user-images.githubusercontent.com/89544326/144116365-ba6415f1-63e8-4082-b749-503100b86618.png)
+
 ## Pre-filtering low count genes before running DESeq2 functions:
 ```{r}
 keep <- rowSums(counts(ddsHTSeq)) >= 10
