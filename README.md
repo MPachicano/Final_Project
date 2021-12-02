@@ -5,10 +5,15 @@ date: "12/3/2021"
 output: html_document
 ---
 
+# Differential gene expression in treated and untreated patients with Early Stage (I/II/III) Hepatocellular carcinoma Liver Cancer
+
+
 # Section 1: DESeq2 Vignette
+Differential gene expression analysis is run using the DESeq2 vignette. 
+Data can be downloaded at: 
 
 ## HTSeq-Count Input
-I have imported a total of 80 HTSeq-count files into a directory, and is displayed in table sampleTable. There are n = 40 from each treatment group in my data file (20 Female, 20 Male for mulitple comparisons).
+I have imported a total of **80 HTSeq-count files** into a dataframe. There are n = 40 from each treatment group in my data file (20 Female, 20 Male for mulitple comparisons)
 
 ## Creating a variable called 'directory' which points to where my output files are located:
 Please change path according to where you saved the folder 'files'. 
