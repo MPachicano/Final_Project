@@ -337,7 +337,7 @@ plotPCA(vsd, intgroup="condition", ntop = 500, returnData = FALSE)
 ```
 ![](https://user-images.githubusercontent.com/89544326/144496205-69bc29ec-2146-42a0-bad0-a6bf4df0968a.png)
 
-However, if you add in Sex for multiple comparisons, you can see that there is a difference between male and female, treated and untreated patients. This is indicated by less mixing, and more grouping of same groups.
+However, if you add in Sex for multiple comparisons, you can see that there is a difference between male and female, treated and untreated patients. This is indicated by less mixing, and more grouping of same groups, specifically the Untreated group (shown in red). 
 
 ```{r}
 pcaData <- plotPCA(vsd, intgroup=c("condition", "type"), returnData=TRUE)
