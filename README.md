@@ -86,7 +86,9 @@ summary(res)
 ```
 ![](https://user-images.githubusercontent.com/89544326/144496152-f23a60bc-2b45-42f9-a56f-438504da79ee.png)
 
-## How many p-values are less than 0.1? There are approximately 201 p-values that are less than 0.1.
+## How many p-values are less than 0.1? 
+There are approximately 201 p-values that are less than 0.1.
+
 ```{r}
 sum(res$padj < 0.1, na.rm=TRUE)
 ```
@@ -122,14 +124,16 @@ resultsNames(dds)
 ```
 ![](https://user-images.githubusercontent.com/89544326/144496163-b337e0fd-df1e-459b-882e-be72ad50e4ef.png)
 
-## Setting 'coef = 2' with the 'ashr' method (this may take awhile, grab a coffee):
+## Setting 'coef = 2' with the 'ashr' method: 
+(This may take awhile, grab a coffee)
+
 ```{r}
 resNorm <- lfcShrink(dds, coef=2, type="normal")
 resAsh <- lfcShrink(dds, coef=2, type="ashr")
 ```
 ![](https://user-images.githubusercontent.com/89544326/144496164-ef5f4d24-e694-49b6-ba5c-ff24dc31ee64.png)
 
-## Plotting MAplots for apeglm, normal, and ashr methods.
+## Plotting MAplots for apeglm, normal, and ashr methods:
 ```{r}
 par(mfrow=c(1,3), mar=c(4,4,2,1))
 xlim <- c(1,1e5); ylim <- c(-3,3)
@@ -146,7 +150,7 @@ plotCounts(dds, gene=which.min(res$padj), intgroup="condition")
 ```
 ![](https://user-images.githubusercontent.com/89544326/144496167-3581e095-817c-4aea-b19f-5591b6ebe097.png)
 
-## Plotting using ggplot: using the function returnData to call for a ggplot.
+## Plotting using ggplot: using the function returnData to call for a ggplot:
 ```{r}
 d <- plotCounts(dds, gene=which.min(res$padj), intgroup="condition", 
                 returnData=TRUE)
@@ -159,7 +163,9 @@ ggplot(d, aes(x=condition, y=count)) +
 
 # Multi-factor design
 Our sample population has a condition of interest (treated for liver cancer or untreated), but we also have the Sex of each patient under "type". By using the colData function, we see that we have to chop/clean up our 'type' names. This is not the most elegant way to grab 'type' data, but it's the only way I could figure out how to add a multiple factor design and it works!
-## With colData, you can see condition and type as the headers. Because of the long names of each samples, we need to do some clean up. The following steps cleans up the "Type" so we can use it in our multi-factor analysis. 
+
+The function colData allows you to see we have both condition and type for each sample. However, due to the long names of each sample, we need to do some clean up to specify 'type' per each patient. The following steps cleans up the "type" so we can use it in our multi-factor analysis. 
+
 ```{r}
 colData(dds)
 ```
