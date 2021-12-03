@@ -604,10 +604,14 @@ legend("topright", fill=rev(colori), legend=rev(names(colori)))
 ![](https://user-images.githubusercontent.com/89544326/144496254-67407dda-8575-401b-a611-70b6913fc857.png)
 
 # Section 2: Conclusions
+Overall, there does not seem to be many significant differentially expressed genes between treated and untreated individuals who have early stages of Liver cancer. By analyzing the heatmaps and PCA plots, one can see that there may be subtle genetic differences between the two groups, especially when Sex is taken into account. However, this analysis needs to be followed up with additional covariates. An interesting idea that would take this one step further, would be to look at race differences in these patients. An interesting question would be if there is there a racial difference between liver patients who are treated vs. those who remain untreated. The current analysis is a good stepping stone to dig further into understanding populational  perspectives of seeking healthcare with disease. 
 
+Interestingly, the most significant differentially expressed gene between treated and untreated liver patients is the PCKS1 gene (Proprotein convertase 1). This gene is commonly associated with obesity. In our analysis, the "treated" group of liver patients had significantly higher normalized counts for the PCKS1 gene. Perhaps this is because those who have prior existing risk factors for liver disease, such as obesity, would have more inclination to seek treatment. Further analysis regarding lifestyle risk factors amongst these two groups would be interesting. For example, seeing if those who are treated have more lifestyle risk factors for liver disease compared to those who remain untreatd. 
+
+Ultimately, this is analysis is useful preliminary data to begin the exploration of genetic differences in individuals who seek or do not seek medical treatment and why. 
 
 # Section 3: Data
-The data file is a zipped file located in the shared Google Drive named XXXX. Please unzip and add it to your Desktop. If you save the file elsewhere, please change the path in the "Input Data" portion of the vignette. 
+The data file is a zipped file located in the shared Google Drive named XXXX. Please unzip and add it to your Desktop. If you save the file elsewhere, please update the path in the "Input Data" portion of the vignette. 
 
 # Section 4: Known issues
 1) When I download my "cart" from https://portal.gdc.cancer.gov/, I have to unzip each individual file myself. I think using linux there is a faster way, but I am not sure how to do this yet. For now, I have unzipped each HTSeq file one by one and placed them in one folder. 
