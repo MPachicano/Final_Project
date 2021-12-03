@@ -12,7 +12,7 @@ Some of the biggest lifestyle risk factors for Liver Cancer is alcohol abuse, sm
 # Section 1: DESeq2 Vignette 
 
 ## HTSeq-Count Input
-I have imported a total of **80 HTSeq-count files** into a dataframe. There are n = 40 from each treatment group in my data file (20 Female, 20 Male for mulitple comparisons)
+**80 HTSeq-count files** can be directly loaded into an R dataframe with the following step below. There are n = 40 from each treatment group in my data file (20 Female, 20 Male for mulitple comparisons)
 
 ## Creating a variable called 'directory' which points to where my output files are located:
 Please change path according to where you saved the folder 'files'. 
