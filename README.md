@@ -9,8 +9,7 @@ output: html_document
 Some of the biggest lifestyle risk factors for Liver Cancer is alcohol abuse, smoking and obesity. Although this disease highly impacts substantial populations in the United States, majority of the time it goes untreated. I will be looking at differences in gene expression in early-stage Hepatocellular carcinoma liver cancer patients who are either treated or remain untreated. This analysis will utilize the package DESeq2 vignette. 
 
 
-# Section 1: DESeq2 Vignette
-Differential gene expression analysis is run using the DESeq2 vignette. 
+# Section 1: DESeq2 Vignette 
 
 ## HTSeq-Count Input
 I have imported a total of **80 HTSeq-count files** into a dataframe. There are n = 40 from each treatment group in my data file (20 Female, 20 Male for mulitple comparisons)
@@ -604,10 +603,13 @@ legend("topright", fill=rev(colori), legend=rev(names(colori)))
 ```
 ![](https://user-images.githubusercontent.com/89544326/144496254-67407dda-8575-401b-a611-70b6913fc857.png)
 
-# Section 2: Data
+# Section 2: Conclusions
+
+
+# Section 3: Data
 The data file is a zipped file located in the shared Google Drive named XXXX. Please unzip and add it to your Desktop. If you save the file elsewhere, please change the path in the "Input Data" portion of the vignette. 
 
-# Section 3: Known issues
+# Section 4: Known issues
 1) When I download my "cart" from https://portal.gdc.cancer.gov/, I have to unzip each individual file myself. I think using linux there is a faster way, but I am not sure how to do this yet. For now, I have unzipped each HTSeq file one by one and placed them in one folder. 
 2) I had to re-name the file names so that the Condition and Type for each sample was labeled. This is not the most elegant way to do this, but it works. 
 3) The file names are very long because each sample has a unique ID. Because of this, I needed to cut Sample ID's out of my heatmaps because it was not loading the graph successfully. I will need to figure out a easy way to rename all the sample ID's. 
