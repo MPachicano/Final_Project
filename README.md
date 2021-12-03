@@ -611,7 +611,7 @@ Interestingly, the most significant differentially expressed gene between treate
 Ultimately, this is analysis is useful preliminary data to begin the exploration of genetic differences in individuals who seek or do not seek medical treatment and why. 
 
 # Section 3: Data
-The data file is a zipped file located in the shared Google Drive named XXXX. Please unzip and add it to your Desktop. If you save the file elsewhere, please update the path in the "Input Data" portion of the vignette. 
+The data file is a zipped file located here: https://drive.google.com/drive/folders/1dH0AAjcRG81wHTNs1B_5k4CmGEltgfyM?usp=sharing. Please unzip and add it to your Desktop. If you save the file elsewhere, please update the path in the "Input Data" portion of the vignette. 
 
 # Section 4: Known issues
 1) When I download my "cart" from https://portal.gdc.cancer.gov/, I have to unzip each individual file myself. I think using linux there is a faster way, but I am not sure how to do this yet. For now, I have unzipped each HTSeq file one by one and placed them in one folder. 
