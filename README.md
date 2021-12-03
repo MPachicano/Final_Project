@@ -6,7 +6,7 @@ output: html_document
 ---
 
 # Differential gene expression in treated and untreated patients with Early Stage (I/II/III) Hepatocellular carcinoma Liver Cancer
-Some of the biggest lifestyle risk factors for Liver Cancer is alcohol abuse, smoking and obesity. Although this disease highly impacts substantial populations in the United States, majority of the time it goes untreated. I will be looking at differences in gene expression in early-stage Hepatocellular carcinoma liver cancer patients who are either treated or remain untreated. This analysis will utilize the package DESeq2 vignette. 
+Some of the biggest lifestyle risk factors for Liver Cancer is alcohol abuse, smoking and obesity. Although this disease highly impacts substantial populations in the United States, majority of the time it goes untreated. I will be looking at differences in gene expression in early-stage Hepatocellular carcinoma liver cancer patients who are either treated or remain untreated. This analysis will utilize the package DESeq2 vignette: http://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html
 
 
 # Section 1: DESeq2 Vignette 
